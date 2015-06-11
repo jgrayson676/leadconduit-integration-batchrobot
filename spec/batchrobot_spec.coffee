@@ -1,6 +1,6 @@
 assert = require('chai').assert
 fields = require('leadconduit-fields')
-integration = require('../src/quickdetails')
+integration = require('../src/batchrobot')
 
 describe 'Zip Code Request', ->
 
