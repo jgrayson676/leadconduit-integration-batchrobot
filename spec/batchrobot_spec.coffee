@@ -28,6 +28,13 @@ describe 'BatchRobot Request', ->
   it 'should not override lead values with custom values of the same name', ->
     assert.equal querystring.parse(@request.body).email, 'foo@bar.com'
 
+describe 'Validate Function', ->
+  it 'should not return valid when delivery_id is missing', ->
+    vars =
+      lead: {email: 'foo@bar.com'}
+      chair: 'Steelcase Leap'
+    assert.equal integration.validate(vars), 'must have a delivery id'
+
 describe 'Success Response', ->
 
   it 'should set a success outcome for a 200 status code', ->

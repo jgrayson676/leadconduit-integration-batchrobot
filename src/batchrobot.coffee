@@ -28,8 +28,15 @@ request = (vars) ->
 
 request.variables = ->
   [
-    { name: 'delivery_id', type: 'string', required: true, description: 'delivery id' }
+    { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier' }
   ]
+
+#
+# Validate Function ------------------------------------------------------
+#
+
+validate = (vars) ->
+  return 'must have a delivery id' unless vars.delivery_id?
 
 #
 # Response Function ------------------------------------------------------
@@ -62,6 +69,7 @@ response.variables = ->
 #
 module.exports =
   name: 'BatchRobot Delivery'
+  validate: validate
   request: request
   response: response
 
