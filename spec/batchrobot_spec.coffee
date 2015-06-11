@@ -8,7 +8,7 @@ describe 'BatchRobot Request', ->
   beforeEach ->
     @vars =
       lead: { email: 'foo@bar.com', first_name: 'Joe'}
-      deliveryId: '12345'
+      delivery_id: '12345'
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
     @request = integration.request(@vars)
@@ -36,9 +36,8 @@ describe 'Success Response', ->
     expected =
       batchrobot:
         outcome: 'success'
-        billable: 0
     response = integration.response({}, {}, res)
-    assert.deepEqual expected.batchrobot.outcome, response.batchrobot.outcome
+    assert.deepEqual expected, response
 
 describe 'Error Response', ->
 
@@ -49,17 +48,15 @@ describe 'Error Response', ->
       batchrobot:
         outcome: 'error'
         reason: 'invalid delivery id'
-        billable: 0
     response = integration.response({}, {}, res)
     assert.deepEqual expected, response
 
   it 'should return unknown error on any status code other than 200 or 400', ->
     res =
-      status: 401
+      status: 500
     expected =
       batchrobot:
         outcome: 'error'
         reason: 'unknown error undefined'
-        billable: 0
     response = integration.response({}, {}, res)
     assert.deepEqual expected, response
