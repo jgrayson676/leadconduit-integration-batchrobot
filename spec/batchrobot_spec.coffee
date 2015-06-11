@@ -1,98 +1,65 @@
 assert = require('chai').assert
 fields = require('leadconduit-fields')
+querystring = require('querystring')
 integration = require('../src/batchrobot')
 
-describe 'Zip Code Request', ->
+describe 'BatchRobot Request', ->
 
   beforeEach ->
-    process.env.ZIPCODES_COM_API_KEY = '1234'
-    @vars = lead: { postal_code: '12345'}
+    @vars =
+      lead: { email: 'foo@bar.com', first_name: 'Joe'}
+      deliveryId: '12345'
+      chair: 'Steelcase Leap'
+      email: 'bar@foo.com'
     @request = integration.request(@vars)
 
   it 'should have url', ->
-    assert.equal @request.url, 'http://api.zip-codes.com/ZipCodesAPI.svc/1.0/QuickGetZipCodeDetails/12345?key=1234'
+    assert.equal @request.url, 'https://app.batchrobot.com/hub/12345/receive'
 
-  it 'should be GET', ->
-    assert.equal @request.method, 'GET'
+  it 'should be POST', ->
+    assert.equal @request.method, 'POST'
 
-  it 'should accept JSON', ->
-    assert.equal @request.headers.Accept, 'application/json'
+  it 'should send the correct value of fields in lead', ->
+    assert.equal querystring.parse(@request.body).first_name, 'Joe'
 
-  it 'should mask API key', ->
-    assert.equal @vars.apiKey, '****'
+  it 'should send the correct value of custom fields', ->
+    assert.equal querystring.parse(@request.body).chair, 'Steelcase Leap'
 
-describe 'Zip Code Validate', ->
-
-  it 'should not allow null zip code', ->
-    error = integration.validate(lead: { postal_code: null })
-    assert.equal error, 'zip code must not be blank'
-
-  it 'should not allow undefined zip code', ->
-    error = integration.validate(lead: {})
-    assert.equal error, 'zip code must not be blank'
-
-  it 'should not allow an invalid zip code', ->
-    error = integration.validate(lead: fields.buildLeadVars(postal_code: 'donkey'))
-    assert.equal error, 'zip code must be valid'
-
-  it 'should not error when zip code is valid', ->
-    error = integration.validate(lead: fields.buildLeadVars(postal_code: '12345'))
-    assert.isUndefined error
-
-  it 'should not error when zip code is missing the valid key', ->
-    error = integration.validate(lead: { postal_code: '12345' })
-    assert.isUndefined error
+  it 'should not override lead values with custom values of the same name', ->
+    assert.equal querystring.parse(@request.body).email, 'foo@bar.com'
 
 describe 'Success Response', ->
 
-  it 'should set a success outcome for a valid zip code', ->
+  it 'should set a success outcome for a 200 status code', ->
     res =
-      body: """
-            {
-            "City":"foo",
-            "State":"bar",
-            "Latitude":"12",
-            "Longitude":"34",
-            "ZipCode":"12345",
-            "County":"foobar"
-            }
-            """
+      status: 200
     expected =
-      quickdetails:
+      batchrobot:
         outcome: 'success'
-        billable: 1
+        billable: 0
     response = integration.response({}, {}, res)
-    assert.deepEqual expected.quickdetails.outcome, response.quickdetails.outcome
-
-describe 'Failure Response', ->
-
-  it 'outcome should be failure when zip code does not exist', ->
-    res =
-      body: """
-            {}
-            """
-    expected =
-      quickdetails:
-        outcome: 'failure'
-        reason: 'invalid zip code.'
-        billable: 1
-    response = integration.response({}, {}, res)
-    assert.deepEqual expected, response
+    assert.deepEqual expected.batchrobot.outcome, response.batchrobot.outcome
 
 describe 'Error Response', ->
 
-  it 'should return error outcome on invalid zip code', ->
+  it 'should return invalid delivery id error on 400 status code', ->
     res =
-      body: """
-            {
-            "Error":"Invalid user data."
-            }
-            """
+      status: 400
     expected =
-      quickdetails:
-        error: 'Invalid user data.'
+      batchrobot:
         outcome: 'error'
-        reason: 'invalid user data.'
-        billable: 1
+        reason: 'invalid delivery id'
+        billable: 0
+    response = integration.response({}, {}, res)
+    assert.deepEqual expected, response
+
+  it 'should return unknown error on any status code other than 200 or 400', ->
+    res =
+      status: 401
+    expected =
+      batchrobot:
+        outcome: 'error'
+        reason: 'unknown error undefined'
+        billable: 0
     response = integration.response({}, {}, res)
     assert.deepEqual expected, response
