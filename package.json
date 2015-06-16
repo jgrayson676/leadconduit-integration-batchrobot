@@ -2,7 +2,7 @@
   "name": "leadconduit-batchrobot",
   "description": "LeadConduit integration with BatchRobot",
   "author": "Jonathan Grayson <jonathan@activeprospect.com>",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "licenses": [
     {
@@ -19,7 +19,6 @@
   },
   "scripts": {
     "test": "cake test",
-
     "prepublish": "cake build"
   },
   "dependencies": {
