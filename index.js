@@ -1,5 +1,3 @@
 module.exports = {
-  outbound: {
-    quickdetails: require('./lib/batchrobot')
-  }
+  batchrobot: require('./lib/batchrobot')
 };

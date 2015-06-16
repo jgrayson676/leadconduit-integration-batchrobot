@@ -1,7 +1,7 @@
 {
-  "name": "leadconduit-zipcodes",
-  "description": "LeadConduit integration with Zip-Codes",
-  "author": "Lynda Wellhausen <lynda@activeprospect.com>",
+  "name": "leadconduit-batchrobot",
+  "description": "LeadConduit integration with BatchRobot",
+  "author": "Jonathan Grayson <jonathan@activeprospect.com>",
   "version": "0.0.0",
   "main": "index.js",
   "licenses": [
