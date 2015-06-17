@@ -1,3 +1,3 @@
 module.exports = {
-  batchrobot: require('./lib/batchrobot')
+  outbound: require('./lib/batchrobot')
 };
