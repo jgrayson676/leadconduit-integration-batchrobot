@@ -15,10 +15,7 @@ describe 'BatchRobot Request', ->
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
       delivery_id: '12345'
-
-    #  chair: 'Steelcase Leap'
-    #  email: 'bar@foo.com'
-    @request = integration.request(@vars)
+ @request = integration.request(@vars)
 
   it 'should have url', ->
     assert.equal @request.url, 'https://app.batchrobot.com/hub/12345/receive'
