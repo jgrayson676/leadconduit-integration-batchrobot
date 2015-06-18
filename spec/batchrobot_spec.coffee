@@ -7,13 +7,20 @@ describe 'BatchRobot Request', ->
 
   beforeEach ->
     @vars =
-      lead: { email: 'foo@bar.com', first_name: 'Joe'}
-      delivery_id: '12345'
+      lead:
+        fields.buildLeadVars({
+          email: 'foo@bar.com'
+          first_name: 'Joe'
+          })
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
+      delivery_id: '12345'
     @request = integration.request(@vars)
 
   it 'should have url', ->
+    console.log @vars
+    console.log @request
+
     assert.equal @request.url, 'https://app.batchrobot.com/hub/12345/receive'
 
   it 'should be POST', ->

@@ -11,10 +11,10 @@ request = (vars) ->
 
   content = {}
   for key, value of flatten(vars.lead)
-    content[key] = value
+    content[key] = value.toString()
 
   for key, value of flatten(vars, {safe:true})
-    content[key] = value if !content[key]? and key?.indexOf('.') == -1
+    content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1
 
   body = querystring.stringify(content)
 
