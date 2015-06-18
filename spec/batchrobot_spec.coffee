@@ -7,10 +7,17 @@ describe 'BatchRobot Request', ->
 
   beforeEach ->
     @vars =
-      lead: { email: 'foo@bar.com', first_name: 'Joe'}
-      delivery_id: '12345'
+      lead:
+        fields.buildLeadVars({
+          email: 'foo@bar.com'
+          first_name: 'Joe'
+          })
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
+      delivery_id: '12345'
+
+    #  chair: 'Steelcase Leap'
+    #  email: 'bar@foo.com'
     @request = integration.request(@vars)
 
   it 'should have url', ->
