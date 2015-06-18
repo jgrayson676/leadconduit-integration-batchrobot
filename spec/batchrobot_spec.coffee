@@ -7,10 +7,14 @@ describe 'BatchRobot Request', ->
 
   beforeEach ->
     @vars =
-      lead: { email: 'foo@bar.com', first_name: 'Joe'}
-      delivery_id: '12345'
+      lead:
+        fields.buildLeadVars({
+          email: 'foo@bar.com'
+          first_name: 'Joe'
+          })
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
+      delivery_id: '12345'
     @request = integration.request(@vars)
 
   it 'should have url', ->
@@ -27,6 +31,9 @@ describe 'BatchRobot Request', ->
 
   it 'should not override lead values with custom values of the same name', ->
     assert.equal querystring.parse(@request.body).email, 'foo@bar.com'
+
+  it 'should delete delivery_id from content', ->
+    assert.isUndefined querystring.parse(@request.body).delivery_id, 'delivery_id is in body'
 
 describe 'Validate Function', ->
   it 'should not return valid when delivery_id is missing', ->
@@ -55,6 +62,16 @@ describe 'Error Response', ->
       batchrobot:
         outcome: 'error'
         reason: 'invalid delivery id'
+    response = integration.response({}, {}, res)
+    assert.deepEqual expected, response
+
+  it 'should return delivery not found on 404 status code', ->
+    res =
+      status: 404
+    expected =
+      batchrobot:
+        outcome: 'error'
+        reason: 'delivery not found'
     response = integration.response({}, {}, res)
     assert.deepEqual expected, response
 

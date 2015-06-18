@@ -11,14 +11,14 @@ request = (vars) ->
 
   content = {}
   for key, value of flatten(vars.lead)
-    content[key] = value
+    content[key] = value.toString()
 
   for key, value of flatten(vars, {safe:true})
-    content[key] = value if !content[key]? and key?.indexOf('.') == -1
+    content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1
+
+  delete content.delivery_id
 
   body = querystring.stringify(content)
-
-
 
   method: 'POST'
   url: "#{baseUrl}#{vars.delivery_id}#{'/receive'}"
@@ -48,6 +48,9 @@ response = (vars, req, res) ->
   if res.status == 400
     event.outcome = 'error'
     event.reason = 'invalid delivery id'
+  else if res.status == 404
+    event.outcome = 'error'
+    event.reason = 'delivery not found'
   else if res.status != 200
     event.outcome = 'error'
     event.reason = 'unknown error ' + res.body
