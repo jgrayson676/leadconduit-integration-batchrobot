@@ -28,7 +28,7 @@ request = (vars) ->
 
 request.variables = ->
   [
-    { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier' }
+    { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier', required: true }
   ]
 
 #
