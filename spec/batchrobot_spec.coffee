@@ -11,6 +11,7 @@ describe 'BatchRobot Request', ->
         fields.buildLeadVars({
           email: 'foo@bar.com'
           first_name: 'Joe'
+          state: null
           })
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
@@ -31,6 +32,9 @@ describe 'BatchRobot Request', ->
 
   it 'should not override lead values with custom values of the same name', ->
     assert.equal querystring.parse(@request.body).email, 'foo@bar.com'
+
+  it 'should not send null fields', ->
+    assert.isUndefined querystring.parse(@request.body).state
 
   it 'should delete delivery_id from content', ->
     assert.isUndefined querystring.parse(@request.body).delivery_id, 'delivery_id is in body'
