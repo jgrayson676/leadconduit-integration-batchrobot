@@ -14,7 +14,7 @@ request = (vars) ->
     content[key] = value.toString() if value?
 
   for key, value of flatten(vars, {safe:true})
-    content[key] = value?.toString() if !content[key]? and key?.indexOf('.') == -1 and value?
+    content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1 and value?
 
   delete content.delivery_id
 
@@ -28,7 +28,7 @@ request = (vars) ->
 
 request.variables = ->
   [
-    { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier'}
+    { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier' }
   ]
 
 #
