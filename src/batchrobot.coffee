@@ -11,10 +11,10 @@ request = (vars) ->
 
   content = {}
   for key, value of flatten(vars.lead)
-    content[key] = value.toString()
+    content[key] = value.toString() if value?
 
   for key, value of flatten(vars, {safe:true})
-    content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1
+    content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1 and value?
 
   delete content.delivery_id
 
