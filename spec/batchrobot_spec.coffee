@@ -46,6 +46,9 @@ describe 'BatchRobot Request', ->
     assert.isUndefined querystring.parse(@request.body).foo
     assert.isUndefined querystring.parse(@request.body).least_favorite_color
 
+  it 'should handle no custom fields', ->
+    assert.isUndefined querystring.parse(integration.request(lead: {email: 'foo@bar.com'}, delivery_id: '12345').body).favorite_color
+
   it 'should delete delivery_id from content', ->
     assert.isUndefined querystring.parse(@request.body).delivery_id, 'delivery_id is in body'
 
