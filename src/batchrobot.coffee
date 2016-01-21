@@ -16,8 +16,9 @@ request = (vars) ->
   for key, value of flatten(vars, {safe:true})
     content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1 and value?
 
-  for key, value of flatten(vars.batchrobot?.custom, {safe: true})
-    content[key] = value.toString() if !content[key]? and value?
+  if vars.batchrobot?.custom
+    for key, value of flatten(vars.batchrobot.custom, {safe: true})
+      content[key] = value.toString() if !content[key]? and value?
 
   delete content.delivery_id
 
