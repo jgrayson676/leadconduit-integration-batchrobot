@@ -16,6 +16,9 @@ request = (vars) ->
   for key, value of flatten(vars, {safe:true})
     content[key] = value.toString() if !content[key]? and key?.indexOf('.') == -1 and value?
 
+  for key, value of flatten(vars.batchrobot?.custom, {safe: true})
+    content[key] = value.toString() if !content[key]? and value?
+
   delete content.delivery_id
 
   body = querystring.stringify(content)
@@ -29,6 +32,7 @@ request = (vars) ->
 request.variables = ->
   [
     { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier' }
+    { name: 'batchrobot.custom.*', type: 'wildcard', required: false }
   ]
 
 #
