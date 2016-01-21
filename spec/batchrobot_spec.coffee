@@ -17,6 +17,10 @@ describe 'BatchRobot Request', ->
       email: 'bar@foo.com'
       delivery_id: '12345'
       foo: null
+      batchrobot:
+        custom:
+          favorite_color: 'blue'
+          least_favorite_color: null
     @request = integration.request(@vars)
 
   it 'should have url', ->
@@ -28,8 +32,11 @@ describe 'BatchRobot Request', ->
   it 'should send the correct value of fields in lead', ->
     assert.equal querystring.parse(@request.body).first_name, 'Joe'
 
-  it 'should send the correct value of custom fields', ->
+  it 'should send the correct value of old format custom fields', ->
     assert.equal querystring.parse(@request.body).chair, 'Steelcase Leap'
+
+  it 'should send the correct value of new format custom fields', ->
+    assert.equal querystring.parse(@request.body).favorite_color, 'blue'
 
   it 'should not override lead values with custom values of the same name', ->
     assert.equal querystring.parse(@request.body).email, 'foo@bar.com'
@@ -37,6 +44,7 @@ describe 'BatchRobot Request', ->
   it 'should not send null fields', ->
     assert.isUndefined querystring.parse(@request.body).state
     assert.isUndefined querystring.parse(@request.body).foo
+    assert.isUndefined querystring.parse(@request.body).least_favorite_color
 
   it 'should delete delivery_id from content', ->
     assert.isUndefined querystring.parse(@request.body).delivery_id, 'delivery_id is in body'
