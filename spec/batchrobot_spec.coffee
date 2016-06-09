@@ -1,18 +1,16 @@
 assert = require('chai').assert
-fields = require('leadconduit-fields')
 querystring = require('querystring')
 integration = require('../src/batchrobot')
+parser = require('leadconduit-integration').test.types.parser(integration.request.variables())
 
 describe 'BatchRobot Request', ->
 
   beforeEach ->
-    @vars =
+    @vars = parser
       lead:
-        fields.buildLeadVars({
-          email: 'foo@bar.com'
-          first_name: 'Joe'
-          state: null
-          })
+        email: 'foo@bar.com'
+        first_name: 'Joe'
+        state: null
       chair: 'Steelcase Leap'
       email: 'bar@foo.com'
       delivery_id: '12345'
