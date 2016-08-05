@@ -21,6 +21,9 @@ describe 'BatchRobot Request', ->
           least_favorite_color: null
     @request = integration.request(@vars)
 
+  afterEach ->
+    process.env.NODE_ENV = 'test'
+
   it 'should have url', ->
     assert.equal @request.url, 'https://app.batchrobot.com/hub/12345/receive'
 
@@ -49,6 +52,18 @@ describe 'BatchRobot Request', ->
 
   it 'should delete delivery_id from content', ->
     assert.isUndefined querystring.parse(@request.body).delivery_id, 'delivery_id is in body'
+
+  it 'should set production url correctly', ->
+    process.env.NODE_ENV = 'production'
+    assert.equal integration.request(@vars).url, 'https://app.batchrobot.com/hub/12345/receive'
+
+  it 'should set staging url correctly', ->
+    process.env.NODE_ENV = 'staging'
+    assert.equal integration.request(@vars).url, 'http://staging.app.batchrobot.com/hub/12345/receive'
+
+  it 'should set development url correctly', ->
+    process.env.NODE_ENV = 'development'
+    assert.equal integration.request(@vars).url, 'http://batchrobot.dev/hub/12345/receive'
 
 describe 'Validate Function', ->
   it 'should not return valid when delivery_id is missing', ->

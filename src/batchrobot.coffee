@@ -1,4 +1,3 @@
-baseUrl = 'https://app.batchrobot.com/hub/'
 flatten = require('flat').flatten
 querystring = require('querystring')
 
@@ -25,7 +24,7 @@ request = (vars) ->
   body = querystring.stringify(content)
 
   method: 'POST'
-  url: "#{baseUrl}#{vars.delivery_id}#{'/receive'}"
+  url: "#{getBaseUrl()}#{vars.delivery_id}#{'/receive'}"
   headers:
     'Content-Type': 'application/x-www-form-urlencoded'
   body: body
@@ -72,9 +71,19 @@ response.variables = ->
   ]
 
 #
+# Helpers ----------------------------------------------------------------
+#
+
+getBaseUrl = ->
+  switch process.env.NODE_ENV
+    when 'production', 'test' then 'https://app.batchrobot.com/hub/'
+    when 'staging' then 'http://staging.app.batchrobot.com/hub/'
+    when 'development' then 'http://batchrobot.dev/hub/'
+
+#
 # Exports ----------------------------------------------------------------
 #
-#
+
 module.exports =
   name: 'BatchRobot Delivery'
   validate: validate
