@@ -22,7 +22,7 @@
   "devDependencies": {
     "chai": ">= 1.9.0",
     "coffee-script": ">= 1.7.0",
-    "leadconduit-integration": "^0.2.0",
-    "mocha": ">= 1.17.0"
+    "leadconduit-cakefile": "^0.1.1",
+    "leadconduit-integration": "^0.2.0"
   }
 }
