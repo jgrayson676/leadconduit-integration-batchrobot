@@ -2,7 +2,7 @@
   "name": "leadconduit-batchrobot",
   "description": "LeadConduit integration with BatchRobot",
   "author": "Jonathan Grayson <jonathan@activeprospect.com>",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "index.js",
   "license": "CC-BY-NC-ND-4.0",
   "repository": {
