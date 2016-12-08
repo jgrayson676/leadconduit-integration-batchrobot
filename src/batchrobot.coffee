@@ -66,8 +66,8 @@ response = (vars, req, res) ->
 
 response.variables = ->
   [
-    { name: 'batchrobot.outcome', type: 'string', description: 'Was the post successful? Success or failure.'},
-    { name: 'batchrobot.reason', type: 'string', description: 'If the post failed this is the error reason.'},
+    { name: 'outcome', type: 'string', description: 'Was the post successful? Success or failure.'},
+    { name: 'reason', type: 'string', description: 'If the post failed this is the error reason.'},
   ]
 
 #
@@ -85,7 +85,7 @@ getBaseUrl = ->
 #
 
 module.exports =
-  name: 'BatchRobot Delivery'
+  name: 'Delivery'
   validate: validate
   request: request
   response: response
