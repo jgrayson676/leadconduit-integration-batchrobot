@@ -66,8 +66,8 @@ response = (vars, req, res) ->
 
 response.variables = ->
   [
-    { name: 'outcome', type: 'string', description: 'Was the post successful? Success or failure.'},
-    { name: 'reason', type: 'string', description: 'If the post failed this is the error reason.'},
+    { name: 'batchrobot.outcome', type: 'string', description: 'Was the post successful? Success or failure.'},
+    { name: 'batchrobot.reason', type: 'string', description: 'If the post failed this is the error reason.'},
   ]
 
 #
