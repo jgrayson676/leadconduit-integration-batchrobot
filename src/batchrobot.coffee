@@ -33,6 +33,7 @@ request.variables = ->
   [
     { name: 'delivery_id', type: 'string', required: true, description: 'Your unique delivery identifier' }
     { name: 'batchrobot.custom.*', type: 'wildcard', required: false }
+    { name: 'lead.*', type: 'wildcard', required: false }
   ]
 
 #
